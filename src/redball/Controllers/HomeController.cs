@@ -13,6 +13,16 @@ namespace redball.Controllers
             return View();
         }
 
+        public IActionResult Ship()
+        {
+            return View();
+        }
+
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
