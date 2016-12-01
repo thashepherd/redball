@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using redball.Models;
 
 namespace redball
 {
@@ -37,6 +35,8 @@ namespace redball
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc();
+            var connection = @"Server=sqlredball01.database.windows.net;Database=redball_basic_db;Trusted_Connection=false;User ID=a-malioto;Password=0yvjxtofA4cI;";
+            services.AddDbContext<redball_basic_dbContext>(options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

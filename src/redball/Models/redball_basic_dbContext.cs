@@ -13,11 +13,9 @@ namespace redball.Models
         public virtual DbSet<TblState> TblState { get; set; }
         public virtual DbSet<TblTnsbenchmarkRate> TblTnsbenchmarkRate { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-            optionsBuilder.UseSqlServer(@"Server=sqlredball01.database.windows.net;Database=redball_basic_db;Trusted_Connection=false;User ID=a-malioto;Password=0yvjxtofA4cI;");
-        }
+        public redball_basic_dbContext(DbContextOptions<redball_basic_dbContext> options)
+        : base(options)
+        { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,11 +35,14 @@ namespace redball.Models
 
             modelBuilder.Entity<TblPlTrailerType>(entity =>
             {
+                // TODO fix identity constraint name
+                // TODO fix column width formatting
                 entity.HasKey(e => e.TtId)
                     .HasName("PK__tblPlTra__FAF82DF1B16D32AF");
 
                 entity.ToTable("tblPlTrailerType");
 
+                // TODO negative, ghostrider
                 entity.Property(e => e.TtId).ValueGeneratedNever();
 
                 entity.Property(e => e.TtDescription).HasMaxLength(255);
@@ -57,6 +58,7 @@ namespace redball.Models
 
             modelBuilder.Entity<TblShipper>(entity =>
             {
+                // TODO fix identity name
                 entity.HasKey(e => e.ShipperId)
                     .HasName("PK__tblShipp__1F8AFE595863D545");
 
@@ -69,6 +71,7 @@ namespace redball.Models
 
             modelBuilder.Entity<TblShipperRateOverride>(entity =>
             {
+                // TODO fix key name
                 entity.HasKey(e => new { e.SroCarrierId, e.SroOriginStateCode, e.SroTargetStateCode })
                     .HasName("PK__tblShipp__C484E9E2C4F25814");
 
@@ -99,6 +102,7 @@ namespace redball.Models
 
             modelBuilder.Entity<TblState>(entity =>
             {
+                // TODO fix key name
                 entity.HasKey(e => e.StateCode)
                     .HasName("PK__tblState__D515E98B2EBB2806");
 
@@ -113,6 +117,7 @@ namespace redball.Models
 
             modelBuilder.Entity<TblTnsbenchmarkRate>(entity =>
             {
+                // TODO fix key name
                 entity.HasKey(e => new { e.TbrOriginStateCode, e.TbrTargetStateCode })
                     .HasName("PK__tblTNSBe__87537E3F12FF94F7");
 

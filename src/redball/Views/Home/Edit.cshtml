@@ -1,0 +1,34 @@
+﻿@model IEnumerable<redball.Models.TblTnsbenchmarkRate>
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>Shippers will use this page to edit their tenders to TNS.</p>
+
+<table class="table">
+    <th>Origin</th>
+    <th>Destination</th>
+    <th>Minimum Charge</th>
+    <th>Cost Per Mile</th>
+
+    @foreach (var row in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => row.TbrOriginStateCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => row.TbrTargetStateCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => row.TbrMinimumCharge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => row.TbrCostPerMile)
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<redball.Models.TblShipper>
+
+@{
+    ViewData["Title"] = "Ship";
+}
+<h2>@ViewData["Title"]</h2>
+<h3>@ViewData["Message"]</h3>
+
+<p>Shippers will use this page to generate files which can be fed into their TMS.</p>
+
+@foreach (var shipper in Model.Where(x => x.ShipperName == "Ollie's Bargain Outlet"))
+{
+    <p>@Html.DisplayFor(modelItem => shipper)</p>
+}
