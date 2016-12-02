@@ -11,6 +11,7 @@ namespace redball.Models
             TblShipperRateOverrideSroTargetStateCodeNavigation = new HashSet<TblShipperRateOverride>();
             TblTnsbenchmarkRateTbrOriginStateCodeNavigation = new HashSet<TblTnsbenchmarkRate>();
             TblTnsbenchmarkRateTbrTargetStateCodeNavigation = new HashSet<TblTnsbenchmarkRate>();
+            TblOriginOStateCodeNavigation = new HashSet<TblOrigin>();
         }
 
         public string StateCode { get; set; }
@@ -20,5 +21,6 @@ namespace redball.Models
         public virtual ICollection<TblShipperRateOverride> TblShipperRateOverrideSroTargetStateCodeNavigation { get; set; }
         public virtual ICollection<TblTnsbenchmarkRate> TblTnsbenchmarkRateTbrOriginStateCodeNavigation { get; set; }
         public virtual ICollection<TblTnsbenchmarkRate> TblTnsbenchmarkRateTbrTargetStateCodeNavigation { get; set; }
+        public virtual ICollection<TblOrigin> TblOriginOStateCodeNavigation { get; set; }
     }
 }

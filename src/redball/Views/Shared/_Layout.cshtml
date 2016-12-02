@@ -33,6 +33,7 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Ship">Ship</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Edit">Edit</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Profile">Profile</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
@@ -43,6 +44,8 @@
         @RenderBody()
         <hr />
         <footer>
+            <p>And never forget...</p>
+            <img src="~/images/keep_em_rolling.jpg" alt="Keep 'em rolling!'" class="img-responsive" />
             <p>&copy; 2016 - Probity Enterprises</p>
         </footer>
     </div>

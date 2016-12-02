@@ -66,3 +66,16 @@ CREATE TABLE tblShipperRateOverride
 INSERT INTO tblShipperRateOverride (SroCarrierId, SroOriginStateCode, SroTargetStateCode, SroCostPerMilePercentageAdjustment)
 VALUES (1, 'MA', 'PA', -0.05)
 
+CREATE TABLE tblOrigin
+(
+  OId INT NOT NULL PRIMARY KEY,
+  OStateCode NVARCHAR(2) NOT NULL
+    CONSTRAINT FK_tblOrigin_OStateCode FOREIGN KEY REFERENCES tblState (StateCode)
+)
+
+CREATE TABLE tblShipperOrigin
+(
+  SoShipperId INT NOT NULL,
+  SoOriginId INT NOT NULL
+    CONSTRAINT FK_tblShipperOrigin_SoOriginId FOREIGN KEY REFERENCES tblOrigin (OId)
+)

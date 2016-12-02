@@ -31,10 +31,13 @@ namespace redball.Controllers
             return View(_context.TblTnsbenchmarkRate.ToList());
         }
 
+        public IActionResult Profile()
+        {
+            return View(_context.TblShipperOrigin.ToList());
+        }
+
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
