@@ -12,6 +12,7 @@ namespace redball.Models
         public virtual DbSet<TblShipperRateOverride> TblShipperRateOverride { get; set; }
         public virtual DbSet<TblState> TblState { get; set; }
         public virtual DbSet<TblTnsbenchmarkRate> TblTnsbenchmarkRate { get; set; }
+        public virtual DbSet<TblOrigin> TblOrigin { get; set; }
 
         public redball_basic_dbContext(DbContextOptions<redball_basic_dbContext> options)
         : base(options)
@@ -67,6 +68,17 @@ namespace redball.Models
                 entity.Property(e => e.ShipperName)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<TblOrigin>(entity =>
+            {
+                entity.HasKey(e => e.OId);
+
+                entity.ToTable("tblOrigin");
+
+                entity.Property(e => e.OStateCode)
+                    .IsRequired()
+                    .HasMaxLength(2);
             });
 
             modelBuilder.Entity<TblShipperRateOverride>(entity =>

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,14 +18,16 @@ namespace redball
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
                 // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
                 builder.AddApplicationInsightsSettings(developerMode: true);
+                builder.AddUserSecrets();
             }
+
+            builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
@@ -34,7 +39,14 @@ namespace redball
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.SslPort = 44321;
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
+
+            services.AddIdentity<IdentityUser, IdentityRole>();
+
             var connection = @"Server=sqlredball01.database.windows.net;Database=redball_basic_db;Trusted_Connection=false;User ID=a-malioto;Password=0yvjxtofA4cI;";
             services.AddDbContext<redball_basic_dbContext>(options => options.UseSqlServer(connection));
         }
@@ -57,8 +69,8 @@ namespace redball
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseIdentity();
             app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
 
             app.UseMvc(routes =>

@@ -23,7 +23,7 @@ namespace redball.Controllers
 
         public IActionResult Ship()
         {
-            return View(_context.TblShipper.ToList());
+            return View(_context.TblPlServiceType.ToList());
         }
 
         public IActionResult Edit()
@@ -31,10 +31,10 @@ namespace redball.Controllers
             return View(_context.TblTnsbenchmarkRate.ToList());
         }
 
-        //public IActionResult Profile()
-        //{
-        //    return View(_context.TblShipperOrigin.ToList());
-        //}
+        public IActionResult Profile()
+        {
+            return View(_context.TblShipper.ToList());
+        }
 
         public IActionResult About()
         {
