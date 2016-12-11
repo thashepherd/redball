@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.EntityFrameworkCore;
 using redball.Models;
 
 namespace redball.Controllers
@@ -23,12 +26,20 @@ namespace redball.Controllers
 
         public IActionResult Ship()
         {
-            return View(_context.TblPlServiceType.ToList());
+            var serviceTypes = _context.TblPlServiceType.Include(x => x.TblPlTrailerType);
+            return View(serviceTypes);
         }
 
         public IActionResult Edit()
         {
-            return View(_context.TblTnsbenchmarkRate.ToList());
+            ViewData["Overrides"] = _context.TblShipperRateOverride
+                .Include(x => x.SroShipper)
+                .Include(x => x.SroOriginStateCodeNavigation)
+                .Include(x => x.SroTargetStateCodeNavigation);
+            ViewData["Benchmark"] = _context.TblTnsbenchmarkRate
+                .Include(x => x.TbrOriginStateCodeNavigation)
+                .Include(x => x.TbrTargetStateCodeNavigation);
+            return View(ViewData);
         }
 
         public IActionResult Profile()

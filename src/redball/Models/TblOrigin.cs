@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace redball.Models
 {
@@ -10,6 +11,8 @@ namespace redball.Models
         }
 
         public int OId { get; set; }
+
+        [Display(Name = "Origin State")]
         public string OStateCode { get; set; }
     }
 }

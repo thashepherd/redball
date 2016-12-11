@@ -84,7 +84,7 @@ namespace redball.Models
             modelBuilder.Entity<TblShipperRateOverride>(entity =>
             {
                 // TODO fix key name
-                entity.HasKey(e => new { e.SroCarrierId, e.SroOriginStateCode, e.SroTargetStateCode })
+                entity.HasKey(e => new { SroShipperId = e.SroShipperId, e.SroOriginStateCode, e.SroTargetStateCode })
                     .HasName("PK__tblShipp__C484E9E2C4F25814");
 
                 entity.ToTable("tblShipperRateOverride");
@@ -93,9 +93,9 @@ namespace redball.Models
 
                 entity.Property(e => e.SroTargetStateCode).HasMaxLength(2);
 
-                entity.HasOne(d => d.SroCarrier)
+                entity.HasOne(d => d.SroShipper)
                     .WithMany(p => p.TblShipperRateOverride)
-                    .HasForeignKey(d => d.SroCarrierId)
+                    .HasForeignKey(d => d.SroShipperId)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_tblShipperRateOverride_SroShipperId");
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace redball.Models
 {
@@ -11,6 +12,8 @@ namespace redball.Models
         }
 
         public int ShipperId { get; set; }
+
+        [Display(Name = "Shipper Name")]
         public string ShipperName { get; set; }
 
         public virtual ICollection<TblShipperRateOverride> TblShipperRateOverride { get; set; }

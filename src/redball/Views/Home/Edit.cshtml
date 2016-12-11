@@ -1,8 +1,11 @@
-﻿@model IEnumerable<redball.Models.TblTnsbenchmarkRate>
-
+﻿@using redball.Models
 @{
     ViewData["Title"] = "Edit";
+
+    var overrides = ViewData["Overrides"] as IEnumerable<TblShipperRateOverride>;
+    var rateTable = ViewData["Benchmark"] as IEnumerable<TblTnsbenchmarkRate>;
 }
+
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
@@ -10,13 +13,16 @@
 
 <table class="table">
     <thead>
-        <th>Origin</th>
-        <th>Destination</th>
-        <th>Minimum Charge</th>
-        <th>Cost Per Mile</th>
+        <tr>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Minimum Charge</th>
+            <th>Cost Per Mile</th>
+            <th>Tendered Cost Per Mile</th>
+        </tr>
     </thead>
 
-    @foreach (var row in Model)
+    @foreach (var row in rateTable)
     {
         <tr>
             <td>
@@ -30,6 +36,16 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => row.TbrCostPerMile)
+            </td>
+            <td>
+                @foreach (var shipperOverride in overrides.Where(x =>
+                    x.SroOriginStateCode == row.TbrOriginStateCode
+                    && x.SroTargetStateCode == row.TbrTargetStateCode
+                    ))
+                {
+                    var adjustedRate = shipperOverride.SroCostPerMilePercentageAdjustment;
+                    <p>@adjustedRate</p>
+                }
             </td>
         </tr>
     }
