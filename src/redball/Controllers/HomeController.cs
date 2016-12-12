@@ -32,13 +32,16 @@ namespace redball.Controllers
 
         public IActionResult Edit()
         {
+            // Overrides may be requeried
             ViewData["Overrides"] = _context.TblShipperRateOverride
                 .Include(x => x.SroShipper)
                 .Include(x => x.SroOriginStateCodeNavigation)
                 .Include(x => x.SroTargetStateCodeNavigation);
+            // Benchmarks loaded easily
             ViewData["Benchmark"] = _context.TblTnsbenchmarkRate
                 .Include(x => x.TbrOriginStateCodeNavigation)
-                .Include(x => x.TbrTargetStateCodeNavigation);
+                .Include(x => x.TbrTargetStateCodeNavigation)
+                .ToList();
             return View(ViewData);
         }
 

@@ -22,7 +22,7 @@
         </tr>
     </thead>
 
-    @foreach (var row in rateTable)
+    @foreach (var row in rateTable.ToList())
     {
         <tr>
             <td>
@@ -43,8 +43,10 @@
                     && x.SroTargetStateCode == row.TbrTargetStateCode
                     ))
                 {
-                    var adjustedRate = shipperOverride.SroCostPerMilePercentageAdjustment;
-                    <p>@adjustedRate</p>
+                    var rateAdjustment = shipperOverride.SroCostPerMilePercentageAdjustment;
+                    var adjustedRate = row.TbrCostPerMile + (row.TbrCostPerMile * (decimal)rateAdjustment);
+                    <p>Percentage rate adjustment: @rateAdjustment</p>
+                    <p>Final cost per mile: @adjustedRate</p>
                 }
             </td>
         </tr>
