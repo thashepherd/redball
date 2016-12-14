@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace redball.Models
 {
@@ -20,9 +18,7 @@ namespace redball.Models
         {
             return string.Format("{0}' {1} {2}",
                 TtLength,
-                string.IsNullOrWhiteSpace(TtName)
-                    ? "trailer"
-                    : TtName,
+                TtName,
                 string.IsNullOrWhiteSpace(TtDescription)
                     ? ""
                     : string.Format("({0})", TtDescription)

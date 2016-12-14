@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -39,17 +38,23 @@ namespace redball
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Cookies.ApplicationCookie.AuthenticationScheme = "ApplicationCookie";
+                options.Cookies.ApplicationCookie.CookieName = "Interop";
+            });
+
             services.AddMvc(options =>
             {
                 options.SslPort = 44321;
                 options.Filters.Add(new RequireHttpsAttribute());
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>();
-
             var connection = @"Server=sqlredball01.database.windows.net;Database=redball_basic_db;Trusted_Connection=false;User ID=a-malioto;Password=0yvjxtofA4cI;";
             services.AddDbContext<redball_basic_dbContext>(options => options.UseSqlServer(connection));
         }
+
+        public object DataConnection { get; set; }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -69,9 +74,9 @@ namespace redball
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseIdentity();
             app.UseApplicationInsightsExceptionTelemetry();
             app.UseStaticFiles();
+            app.UseIdentity();
 
             app.UseMvc(routes =>
             {

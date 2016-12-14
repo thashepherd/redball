@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace redball.Models
+﻿namespace redball.Models
 {
     public partial class TblTnsbenchmarkRate
     {

@@ -6,8 +6,27 @@
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
-<p>Shippers will use this page to generate files which can be fed into their TMS.</p>
+<h3>Destination</h3>
+<form>
+    <div class="form-group">
+        <label for="destinationStreet">Street Address</label>
+        <input type="text" class="form-control" id="destinationStreet" placeholder="Street">
+    </div>
+    <div class="form-group">
+        <label for="destinationCity">City</label>
+        <input type="text" class="form-control" id="destinationCity" placeholder="City">
+    </div>
+    <div class="form-group">
+        <label for="destinationState">State</label>
+        <input type="text" class="form-control" id="destinationState" placeholder="State">
+    </div>
+    <div class="form-group">
+        <label for="destinationZip">Zip Code</label>
+        <input type="text" class="form-control" id="destinationZip" placeholder="Zip Code">
+    </div>
+</form>
 
+<h3>Select a service and trailer type</h3>
 <table class="table">
     <thead>
         <tr>
@@ -23,14 +42,23 @@
                 @Html.DisplayFor(modelItem => serviceType.StName)
             </td>
             <td>
-                @foreach (var trailerType in serviceType.TblPlTrailerType)
+                <div class="radio">
+                    @foreach (var trailerType in serviceType.TblPlTrailerType)
                 {
-                    <p>@trailerType.ToString()</p>
-                }
+                        <p>
+                            <label>
+                                <input type="radio" name="trailerTypeRadios" id="trailerType" + @trailerType.TtId />
+                                @trailerType.ToString()
+                            </label>
+                        </p>
+                    }
+                </div>
             </td>
         </tr>
     }
 </table>
+
+<h3>Review your tendered rate</h3>
 
 <h3>Download Tender</h3>
 <div class="row">

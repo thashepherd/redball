@@ -18,12 +18,21 @@
             <th>Destination</th>
             <th>Minimum Charge</th>
             <th>Cost Per Mile</th>
-            <th>Tendered Cost Per Mile</th>
+            <th>Calculation</th>
         </tr>
     </thead>
 
     @foreach (var row in rateTable.ToList())
     {
+        double? rateAdjustment = null;
+        decimal? adjustedRate = null;
+        var shipperOverride = overrides.FirstOrDefault(x => x.SroOriginStateCode == row.TbrOriginStateCode
+                                                            && x.SroTargetStateCode == row.TbrTargetStateCode);
+        if (shipperOverride != null)
+        {
+            rateAdjustment = shipperOverride.SroCostPerMilePercentageAdjustment;
+            adjustedRate = row.TbrCostPerMile + (row.TbrCostPerMile * (decimal)rateAdjustment);
+        }
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => row.TbrOriginStateCode)
@@ -32,22 +41,24 @@
                 @Html.DisplayFor(modelItem => row.TbrTargetStateCode)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => row.TbrMinimumCharge)
+                $@Html.DisplayFor(modelItem => row.TbrMinimumCharge)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => row.TbrCostPerMile)
+                @(string.Format("${0:#.00}", adjustedRate ?? row.TbrCostPerMile))
             </td>
             <td>
-                @foreach (var shipperOverride in overrides.Where(x =>
-                    x.SroOriginStateCode == row.TbrOriginStateCode
-                    && x.SroTargetStateCode == row.TbrTargetStateCode
-                    ))
+                @if (shipperOverride != null)
                 {
-                    var rateAdjustment = shipperOverride.SroCostPerMilePercentageAdjustment;
-                    var adjustedRate = row.TbrCostPerMile + (row.TbrCostPerMile * (decimal)rateAdjustment);
-                    <p>Percentage rate adjustment: @rateAdjustment</p>
-                    <p>Final cost per mile: @adjustedRate</p>
+
+                    <p>TNS baseline rate: @string.Format("${0:#.00}", row.TbrCostPerMile)</p>
+                    <p>Percentage rate adjustment: @(rateAdjustment * 100)%</p>
+                    <p>Final cost per mile: @string.Format("${0:#.00}", adjustedRate)</p>
                 }
+                else
+                {
+                    <p>(Matches TNS baseline rate)</p>
+                }
+
             </td>
         </tr>
     }
