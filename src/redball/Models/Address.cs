@@ -6,6 +6,7 @@ namespace redball.Models
     {
         public Address()
         {
+            ShipmentAddressNavigation = new HashSet<Shipment>();
         }
 
         // TODO finesse model creation

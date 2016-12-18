@@ -2,8 +2,12 @@
 {
     public partial class BenchmarkRate
     {
-        public State TbrOriginStateCode { get; set; }
-        public State TbrTargetStateCode { get; set; }
+        public string TbrOriginStateCode { get; set; }
+        public virtual State TbrOriginState { get; set; }
+
+        public string TbrTargetStateCode { get; set; }
+        public virtual State TbrTargetState { get; set; }
+
         public decimal TbrMinimumCharge { get; set; }
         public decimal TbrCostPerMile { get; set; }
     }

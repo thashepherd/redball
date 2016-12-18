@@ -19,23 +19,6 @@ namespace redball.Controllers
             return View();
         }
 
-        public IActionResult Ship()
-        {
-            ViewData["States"] = _context.TblState;
-            ViewData["ServiceTypes"] = _context.TblPlServiceType.Include(x => x.TblPlTrailerType);
-            // Overrides may be requeried
-            ViewData["Overrides"] = _context.TblShipperRateOverride
-                .Include(x => x.SroShipper)
-                .Include(x => x.OriginStateCodeNavigation)
-                .Include(x => x.TargetStateCodeNavigation);
-            // Benchmarks loaded easily
-            ViewData["Benchmark"] = _context.TblTnsbenchmarkRate
-                .Include(x => x.TbrOriginStateCodeNavigation)
-                .Include(x => x.TbrTargetStateCodeNavigation)
-                .ToList();
-            return View(ViewData);
-        }
-
         public IActionResult Profile()
         {
             return View(_context.TblShipper.ToList());

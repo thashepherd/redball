@@ -150,25 +150,25 @@ namespace redball.Models
 
                 entity.ToTable("tblTNSBenchmarkRate");
 
-                entity.Property(e => e.TbrOriginStateCode).HasMaxLength(2);
+                entity.Property(e => e.TbrOriginStateCode).HasMaxLength(2).IsRequired();
 
-                entity.Property(e => e.TbrTargetStateCode).HasMaxLength(2);
+                entity.Property(e => e.TbrTargetStateCode).HasMaxLength(2).IsRequired();
 
-                entity.Property(e => e.TbrCostPerMile).HasColumnType("decimal");
+                entity.Property(e => e.TbrCostPerMile).HasColumnType("decimal").IsRequired();
 
                 entity.Property(e => e.TbrMinimumCharge).HasColumnType("decimal");
 
-                //entity.HasOne(d => d.State)
-                //    .WithMany(p => p.BenchmarkRateOriginStateNavigation)
-                //    .HasForeignKey(d => d.TbrOriginStateCode)
-                //    .OnDelete(DeleteBehavior.Restrict)
-                //    .HasConstraintName("FK_tblTNSBenchmarkRate_TbrOriginStateCode");
+                entity.HasOne(d => d.TbrOriginState)
+                    .WithMany(p => p.BenchmarkRateOriginStateNavigation)
+                    .HasForeignKey(d => d.TbrOriginStateCode)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_tblTNSBenchmarkRate_TbrOriginStateCode");
 
-                //entity.HasOne(d => d.TbrTargetStateCodeNavigation)
-                //    .WithMany(p => p.BenchmarkRateTargetStateNavigation)
-                //    .HasForeignKey(d => d.TbrTargetStateCode)
-                //    .OnDelete(DeleteBehavior.Restrict)
-                //    .HasConstraintName("FK_tblTNSBenchmarkRate_TbrTargetStateCode");
+                entity.HasOne(d => d.TbrTargetState)
+                    .WithMany(p => p.BenchmarkRateTargetStateNavigation)
+                    .HasForeignKey(d => d.TbrTargetStateCode)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_tblTNSBenchmarkRate_TbrTargetStateCode");
             });
         }
     }

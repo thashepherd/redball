@@ -8,6 +8,7 @@ namespace redball.Models
         public Shipper()
         {
             ShipperRateOverrideNavigation = new HashSet<ShipperRateOverride>();
+            ShipmentShipperNavigation = new HashSet<Shipment>();
         }
 
         public int ShipperId { get; set; }

@@ -5,6 +5,10 @@ namespace redball.Models
 {
     public partial class Origin
     {
+        public Origin()
+        {
+            ShipmentOriginNavigation = new HashSet<Shipment>();
+        }
         public int OriginId { get; set; }
 
         [Display(Name = "Origin State")]

@@ -7,11 +7,11 @@ using redball.Models;
 
 namespace redball.Controllers
 {
-    public class EditController : Controller
+    public class ShipController : Controller
     {
         private redball_basic_dbContext _context;
 
-        public EditController(redball_basic_dbContext context)
+        public ShipController(redball_basic_dbContext context)
         {
             _context = context;
         }
@@ -19,6 +19,8 @@ namespace redball.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            ViewData["States"] = _context.TblState;
+            ViewData["ServiceTypes"] = _context.TblPlServiceType.Include(x => x.TblPlTrailerType);
             // Overrides may be requeried
             ViewData["Overrides"] = _context.TblShipperRateOverride
                 .Include(x => x.SroShipper)
