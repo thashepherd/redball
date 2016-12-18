@@ -2,8 +2,8 @@
 @{
     ViewData["Title"] = "Edit";
 
-    var overrides = ViewData["Overrides"] as IEnumerable<TblShipperRateOverride>;
-    var rateTable = ViewData["Benchmark"] as IEnumerable<TblTnsbenchmarkRate>;
+    var overrides = ViewData["Overrides"] as IEnumerable<ShipperRateOverride>;
+    var rateTable = ViewData["Benchmark"] as IEnumerable<BenchmarkRate>;
 }
 
 <h2>@ViewData["Title"]</h2>

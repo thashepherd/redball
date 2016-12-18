@@ -2,21 +2,19 @@
 
 namespace redball.Models
 {
-    public partial class TblShipperRateOverride
+    public partial class ShipperRateOverride
     {
         public int SroShipperId { get; set; }
+        public virtual Shipper SroShipper { get; set; }
 
         [Display(Name = "Origin State")]
         public string SroOriginStateCode { get; set; }
+        public virtual State SroOriginState { get; set; }
 
         [Display(Name = "Destination State")]
         public string SroTargetStateCode { get; set; }
+        public virtual State SroTargetState { get; set; }
+
         public double SroCostPerMilePercentageAdjustment { get; set; }
-
-        public virtual TblShipper SroShipper { get; set; }
-
-        public virtual TblState SroOriginStateCodeNavigation { get; set; }
-
-        public virtual TblState SroTargetStateCodeNavigation { get; set; }
     }
 }

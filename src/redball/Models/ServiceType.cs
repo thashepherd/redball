@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace redball.Models
 {
-    public partial class TblPlServiceType
+    public partial class ServiceType
     {
-        public TblPlServiceType()
+        public ServiceType()
         {
-            TblPlTrailerType = new HashSet<TblPlTrailerType>();
+            TblPlTrailerType = new HashSet<TrailerType>();
         }
 
         public byte StId { get; set; }
@@ -16,6 +16,6 @@ namespace redball.Models
         public string StName { get; set; }
 
         [Display(Name = "Supported Trailer Type")]
-        public virtual ICollection<TblPlTrailerType> TblPlTrailerType { get; set; }
+        public virtual ICollection<TrailerType> TblPlTrailerType { get; set; }
     }
 }

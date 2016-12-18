@@ -3,26 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using redball.Models;
 
+// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+
 namespace redball.Controllers
 {
-    public class HomeController : Controller
+    public class EditController : Controller
     {
         private redball_basic_dbContext _context;
 
-        public HomeController(redball_basic_dbContext context)
+        public EditController(redball_basic_dbContext context)
         {
             _context = context;
         }
 
+        // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Ship()
-        {
-            ViewData["States"] = _context.TblState;
-            ViewData["ServiceTypes"] = _context.TblPlServiceType.Include(x => x.TblPlTrailerType);
             // Overrides may be requeried
             ViewData["Overrides"] = _context.TblShipperRateOverride
                 .Include(x => x.SroShipper)
@@ -34,28 +30,6 @@ namespace redball.Controllers
                 .Include(x => x.TbrTargetStateCodeNavigation)
                 .ToList();
             return View(ViewData);
-        }
-
-        public IActionResult Profile()
-        {
-            return View(_context.TblShipper.ToList());
-        }
-
-        public IActionResult About()
-        {
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View();
         }
     }
 }

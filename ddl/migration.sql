@@ -68,14 +68,36 @@ VALUES (1, 'MA', 'PA', -0.05)
 
 CREATE TABLE tblOrigin
 (
-  OId INT NOT NULL PRIMARY KEY,
-  OStateCode NVARCHAR(2) NOT NULL
-    CONSTRAINT FK_tblOrigin_OStateCode FOREIGN KEY REFERENCES tblState (StateCode)
+  OriginId INT NOT NULL PRIMARY KEY,
+  OriginStateCode NVARCHAR(2) NOT NULL
+    CONSTRAINT FK_tblOrigin_OriginStateCode FOREIGN KEY REFERENCES tblState (StateCode)
 )
 
 CREATE TABLE tblShipperOrigin
 (
   SoShipperId INT NOT NULL,
   SoOriginId INT NOT NULL
-    CONSTRAINT FK_tblShipperOrigin_SoOriginId FOREIGN KEY REFERENCES tblOrigin (OId)
+    CONSTRAINT FK_tblShipperOrigin_SoOriginId FOREIGN KEY REFERENCES tblOrigin (OriginId)
+)
+
+CREATE TABLE tblAddress
+(
+  AddressId INT NOT NULL PRIMARY KEY,
+  AddressStateCode NVARCHAR(2) NOT NULL
+    CONSTRAINT FK_tblAddress_AddressStateCode FOREIGN KEY REFERENCES tblState (StateCode),
+  AddressCity NVARCHAR(50) NULL,
+  AddressStreet NVARCHAR(MAX) NULL
+)
+
+CREATE TABLE tblShipment
+(
+  ShipmentId INT NOT NULL PRIMARY KEY CLUSTERED,
+  ShipmentAddressId INT NOT NULL
+    CONSTRAINT FK_tblShipment_ShipmentAddressId FOREIGN KEY REFERENCES tblAddress (AddressId),
+  ShipmentShipperId INT NOT NULL
+    CONSTRAINT FK_tblShipment_ShipmentShipperId FOREIGN KEY REFERENCES tblShipper (ShipperId),
+  ShipmentOriginId INT NOT NULL
+    CONSTRAINT FK_tblShipment_ShipmentOriginId FOREIGN KEY REFERENCES tblOrigin (OriginId),
+  ShipmentPerMileActual DECIMAL(19,4) NOT NULL,
+  ShipmentDate DATETIMEOFFSET NOT NULL DEFAULT(SYSDATETIMEOFFSET())
 )

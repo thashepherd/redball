@@ -2,7 +2,7 @@
 
 namespace redball.Models
 {
-    public partial class TblPlTrailerType
+    public partial class TrailerType
     {
         public byte TtId { get; set; }
         public byte TtStId { get; set; }
@@ -12,7 +12,7 @@ namespace redball.Models
         public string TtName { get; set; }
         public string TtDescription { get; set; }
 
-        public virtual TblPlServiceType TtSt { get; set; }
+        public virtual ServiceType TrailerTypeServiceType { get; set; }
 
         public override string ToString()
         {

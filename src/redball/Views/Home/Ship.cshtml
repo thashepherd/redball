@@ -1,33 +1,52 @@
-﻿@model IEnumerable<redball.Models.TblPlServiceType>
-
+﻿@using System.Collections
+@using System.Threading.Tasks
+@using redball.Models
 @{
     ViewData["Title"] = "Ship";
+
+    var states = ViewData["States"] as IEnumerable<State> ?? new List<State>();
+    var serviceTypes = ViewData["ServiceTypes"] as IEnumerable<ServiceType> ?? new List<ServiceType>();
+    var overrides = ViewData["Overrides"] as IEnumerable<ShipperRateOverride> ?? new List<ShipperRateOverride>();
+    var rateTable = ViewData["Benchmark"] as IEnumerable<BenchmarkRate> ?? new List<BenchmarkRate>();
 }
+
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
 
-<h3>Destination</h3>
-<form>
+<form class="form-horizontal">
+    <legend>Destination Address</legend>
+
     <div class="form-group">
-        <label for="destinationStreet">Street Address</label>
-        <input type="text" class="form-control" id="destinationStreet" placeholder="Street">
+        <div class="col-md-8">
+            <label for="destinationStreet" class="control-label">Street Address</label>
+            <input type="text" class="form-control input-large" id="destinationStreet" placeholder="Street">
+        </div>
     </div>
     <div class="form-group">
-        <label for="destinationCity">City</label>
-        <input type="text" class="form-control" id="destinationCity" placeholder="City">
-    </div>
-    <div class="form-group">
-        <label for="destinationState">State</label>
-        <input type="text" class="form-control" id="destinationState" placeholder="State">
-    </div>
-    <div class="form-group">
-        <label for="destinationZip">Zip Code</label>
-        <input type="text" class="form-control" id="destinationZip" placeholder="Zip Code">
+        <div class="col-md-4">
+            <label for="destinationCity" class="control-label">City</label>
+            <input type="text" class="form-control" id="destinationCity" placeholder="City">
+        </div>
+        <div class="col-md-2">
+            <label for="destinationState" class="control-label">State</label>
+            <!-- TODO Compare mechanism for populating dropdown list -->
+            @Html.DropDownList("SelectedEmployee", new SelectList(states, "StateCode", "StateCode"));
+            <select class="form-control col-md-2" id="destinationState" placeholder="State">
+                @foreach (var state in states)
+                {
+                    <option>@state.StateCode</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="destinationZip" class="control-label"> Zip Code</label>
+            <input type="text" class="form-control col-md-4" id="destinationZip" placeholder="Zip Code">
+        </div>
     </div>
 </form>
-
-<h3>Select a service and trailer type</h3>
+<br />
 <table class="table">
+    Select a service and trailer type
     <thead>
         <tr>
             <th>Service Type</th>
@@ -35,7 +54,7 @@
         </tr>
     </thead>
 
-    @foreach (var serviceType in Model)
+    @foreach (var serviceType in serviceTypes)
     {
         <tr>
             <td>
@@ -44,7 +63,7 @@
             <td>
                 <div class="radio">
                     @foreach (var trailerType in serviceType.TblPlTrailerType)
-                {
+                    {
                         <p>
                             <label>
                                 <input type="radio" name="trailerTypeRadios" id="trailerType" + @trailerType.TtId />
@@ -58,7 +77,53 @@
     }
 </table>
 
-<h3>Review your tendered rate</h3>
+@*<div id="rateDisplay">
+        <legend>Review your tendered rate</legend>
+
+        @{
+            var baselineRate = rateTable.Where(x => x.TbrTargetStateCode == "MA");
+        }
+        @foreach (var row in rateTable.ToList())
+        {
+            double? rateAdjustment = null;
+            decimal? adjustedRate = null;
+            var shipperOverride = overrides.FirstOrDefault(x => x.SroOriginStateCode == row.TbrOriginStateCode
+                                                                && x.SroTargetStateCode == row.TbrTargetStateCode);
+            if (shipperOverride != null)
+            {
+                rateAdjustment = shipperOverride.SroCostPerMilePercentageAdjustment;
+                adjustedRate = row.TbrCostPerMile + (row.TbrCostPerMile * (decimal)rateAdjustment);
+            }
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => row.TbrOriginStateCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => row.TbrTargetStateCode)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => row.TbrMinimumCharge)
+                </td>
+                <td>
+                    @(string.Format("${0:#.00}", adjustedRate ?? row.TbrCostPerMile))
+                </td>
+                <td>
+                    @if (shipperOverride != null)
+                    {
+
+                        <p>TNS baseline rate: @string.Format("${0:#.00}", row.TbrCostPerMile)</p>
+                        <p>Percentage rate adjustment: @(rateAdjustment * 100)%</p>
+                        <p>Final cost per mile: @string.Format("${0:#.00}", adjustedRate)</p>
+                    }
+                    else
+                    {
+                        <p>(Matches TNS baseline rate)</p>
+                    }
+
+                </td>
+            </tr>
+        }
+    </div>*@
 
 <h3>Download Tender</h3>
 <div class="row">
